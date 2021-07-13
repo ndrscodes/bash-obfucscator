@@ -42,7 +42,7 @@ for param in "$@"; do
 	echo -n "function $random_func_name { $line_suffix"
 	echo -n "$line_prefix local $random_var_name=\"\"$line_suffix"
 	while IFS= read -n1 c; do
-		echo -n "$line_prefix printf \"\\\x\$(printf %x \$(($(($(get_keycode "$c")<<$shift_size))>>$shift_size)))\"$line_suffix"
+		echo -n "$line_prefix $random_var_name+=\"\$(printf \"\\\x\$(printf %x \$(($(($(get_keycode "$c")<<$shift_size))>>$shift_size)))\")\"$line_suffix"
 	done < <(echo -n $param);
 	echo -n "$line_prefix echo \$$random_var_name$line_suffix";
 	echo " }\n"
