@@ -40,6 +40,10 @@ function get_keycode {
 	printf $((16#$(printf %x "'$1")))
 }
 
+function generate_rand_num {
+	printf $(( RANDOM % $2 + $1 ))
+}
+
 for param in "$@"; do
 	random_func_name=$(get_random_name)
 	random_var_name=$(get_random_name)
@@ -47,7 +51,8 @@ for param in "$@"; do
 	echo -n "function $random_func_name {"
 	echo -n "$line_prefix${structure_char}local $random_var_name=\"\"$line_suffix"
 	while IFS= read -n1 c; do
-		echo -n "$line_prefix$structure_char$random_var_name+=\"\$(printf \"\\\x\$(printf %x \$(($(($(get_keycode "$c")<<$shift_size))>>$shift_size)))\")\"$line_suffix"
+		rand=$(generate_rand_num 1 8)
+		echo -n "$line_prefix$structure_char$random_var_name+=\"\$(printf \"\\\x\$(printf %x \$(($(($(get_keycode "$c")<<$rand))>>$rand)))\")\"$line_suffix"
 	done < <(echo -n $param);
 	echo -n "$line_prefix${structure_char}echo \$$random_var_name$line_suffix";
 	echo "$line_prefix}\n"
