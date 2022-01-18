@@ -14,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-shift_size=2
 readable_line_prefix="\n"
 readable_line_suffix=""
 readable_structure_char="\t"
